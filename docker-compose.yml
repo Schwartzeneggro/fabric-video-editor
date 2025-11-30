@@ -2,9 +2,12 @@ version: '3.8'
 
 services:
   fabric-video-editor:
-    # This tells Portainer: "Look for the Dockerfile and build it"
     build: .
     container_name: fabric-video-editor
     restart: unless-stopped
+    # ----------------------------------------------
+    # CHECK ALIGNMENT: The 'p' below must line up 
+    # directly under the 'r' in restart.
+    # ----------------------------------------------
     ports:
       - "5173:5173"
