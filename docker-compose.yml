@@ -1,13 +1,18 @@
 version: '3.8'
+
 services:
   fabric-video-editor:
     image: node:18
+    container_name: fabric-video-editor
     working_dir: /app
-    # This forces the container to keep running so we can install things
-    command: sh -c "npm install --legacy-peer-deps && npm run dev -- --host"
+    # We mount the current directory so the code is visible to Node
+    volumes:
+      - ./:/app
     ports:
       - "8095:5173"
-    volumes:
-       - ./:/app
-       - /app/node_modules
+    # 1. Install deps
+    # 2. Run Vite with --host so it is visible outside the container
+    command: >
+      sh -c "npm install --legacy-peer-deps && 
+             npm run dev -- --host 0.0.0.0"
     restart: unless-stopped
