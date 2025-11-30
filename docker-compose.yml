@@ -5,9 +5,5 @@ services:
     build: .
     container_name: fabric-video-editor
     restart: unless-stopped
-    # ----------------------------------------------
-    # CHECK ALIGNMENT: The 'p' below must line up 
-    # directly under the 'r' in restart.
-    # ----------------------------------------------
     ports:
       - "5173:5173"
