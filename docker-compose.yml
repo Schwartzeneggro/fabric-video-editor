@@ -2,17 +2,9 @@ version: '3.8'
 
 services:
   fabric-video-editor:
-    image: node:18
+    # This tells Portainer: "Look for the Dockerfile and build it"
+    build: .
     container_name: fabric-video-editor
-    working_dir: /app
     restart: unless-stopped
-    # ------------------------------------------------
-    # IMPORTANT: 'ports' must be aligned with 'image'
-    # ------------------------------------------------
     ports:
       - "5173:5173"
-    volumes:
-      - ./:/app
-      - /app/node_modules
-    # We use sh -c to chain the install and run commands
-    command: sh -c "npm install --legacy-peer-deps && npm run dev -- --host 0.0.0.0"
