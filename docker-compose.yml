@@ -6,4 +6,5 @@ services:
     container_name: fabric-video-editor
     restart: unless-stopped
     ports:
-      - "5173:5173"
+      # Map port 3000 (Next.js default)
+      - "3000:3000"
