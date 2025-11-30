@@ -1,6 +1,6 @@
 FROM node:18
 
-# Install System Dependencies
+# Install System Dependencies (Required for image processing)
 RUN apt-get update && apt-get install -y \
     build-essential \
     libcairo2-dev \
@@ -12,14 +12,15 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
+# Copy files
 COPY . .
 
-# Force install again
+# Clean install
 RUN rm -rf node_modules
 RUN npm install --legacy-peer-deps
 
-EXPOSE 5173
+# Next.js uses Port 3000
+EXPOSE 3000
 
-# --- THE CHANGE IS HERE ---
-# Instead of starting the app, we just keep the container alive
-CMD ["tail", "-f", "/dev/null"]
+# Start Next.js binding to all interfaces
+CMD ["npx", "next", "dev", "-H", "0.0.0.0"]
