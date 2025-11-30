@@ -1,7 +1,13 @@
 version: '3.8'
 services:
   fabric-video-editor:
-    build: .
+    image: node:18
+    working_dir: /app
+    # This forces the container to keep running so we can install things
+    command: sh -c "npm install --legacy-peer-deps && npm run dev -- --host"
     ports:
-      - "3000:80"
-    restart: always
+      - "5173:5173"
+    volumes:
+       - ./:/app
+       - /app/node_modules
+    restart: unless-stopped
