@@ -6,7 +6,7 @@ services:
     # This forces the container to keep running so we can install things
     command: sh -c "npm install --legacy-peer-deps && npm run dev -- --host"
     ports:
-      - "5173:5173"
+      - "8095:5173"
     volumes:
        - ./:/app
        - /app/node_modules
