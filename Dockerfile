@@ -19,8 +19,7 @@ RUN npx vite build
 FROM nginx:alpine
 
 # Copy the dist folder
-COPY --from=builder /app/dist /usr/share/nginx/html
-
+COPY --from=builder /app/build /usr/share/nginx/html
 # Expose port 80
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
