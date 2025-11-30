@@ -5,14 +5,14 @@ services:
     image: node:18
     container_name: fabric-video-editor
     working_dir: /app
-    # We mount the current directory so the code is visible to Node
+    restart: unless-stopped
+    # ------------------------------------------------
+    # IMPORTANT: 'ports' must be aligned with 'image'
+    # ------------------------------------------------
+    ports:
+      - "5173:5173"
     volumes:
       - ./:/app
-    ports:
-      - "8095:5173"
-    # 1. Install deps
-    # 2. Run Vite with --host so it is visible outside the container
-    command: >
-      sh -c "npm install --legacy-peer-deps && 
-             npm run dev -- --host 0.0.0.0"
-    restart: unless-stopped
+      - /app/node_modules
+    # We use sh -c to chain the install and run commands
+    command: sh -c "npm install --legacy-peer-deps && npm run dev -- --host 0.0.0.0"
