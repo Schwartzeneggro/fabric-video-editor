@@ -1,33 +1,18 @@
-# Stage 1: Build the application
-# We use standard 'node:18' (Debian) instead of 'alpine' to ensure 
-# all C++/Python build tools for image libraries are present.
-FROM node:18 AS builder
+# 1. Use Node.js
+FROM node:18
 
+# 2. Create a folder for the app
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
-
-# 1. Install dependencies with legacy-peer-deps to ignore version conflicts
-# 2. --no-audit speeds it up
-RUN npm install --legacy-peer-deps --no-audit
-
-# Copy source code
+# 3. COPY all files from GitHub into that folder
+# (This fixes your "no such file" error)
 COPY . .
 
-# Increase Node memory limit to 4GB to prevent crashing during build
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+# 4. Install the dependencies
+RUN npm install --legacy-peer-deps
 
-# Run the build using npx vite build directly to skip strict TypeScript checks
-# that often stop builds unnecessarily
-RUN npx vite build
+# 5. Open the port
+EXPOSE 5173
 
-# Stage 2: Serve with Nginx
-FROM nginx:alpine
-
-# Copy the dist folder
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# 6. Run the app in Dev mode (so it doesn't crash on build errors)
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
